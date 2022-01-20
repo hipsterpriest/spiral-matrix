@@ -1,7 +1,5 @@
 import "./App.css";
 import React, { useState } from "react";
-import { matrices } from "./matrixdata"; // test data for user selection
-
 //import Grid from "react-css-grid";
 const RIGHTARROW = "\u2192";
 const LEFTARROW = "\u2190";
@@ -10,16 +8,8 @@ const DOWNARROW = "\u2193";
 let spiral = []; // simple array to contain the spiral
 let viz = []; // so it can be vizualised
 
-//Visualize the matrix (which is held in the viz variable)
 function ShowViz() {
   let m = viz.length;
-  if (m === 0) {
-    return (
-      <>
-        <h3>Empty Viz!</h3>
-      </>
-    );
-  }
   let n = viz[0].length;
   console.log("VIZ: Mxn", m, n);
   document.documentElement.style.setProperty("--colNum", n); // change the value of the CSS variable colNum
@@ -41,6 +31,7 @@ function ShowViz() {
     <>
       <h2>Matrix viz</h2>
       <div className="wrapper">
+        Size (m x n): {m / 2}x{n / 2}
         <span>{printMatrix}</span>
       </div>
     </>
@@ -78,26 +69,17 @@ function ShowMatrix({ matrix }) {
 
 function SpiralMatrix(props) {
   const matrix = props.matrix; // pull out the matrix from the props
-  viz = [];
-  spiral = [];
-  if (matrix.length === 0) {
-    return (
-      <>
-        <h3>Empty!</h3>
-      </>
-    );
-  }
-
   let m = matrix.length;
   let n = matrix[0].length;
   let maxX = n - 1;
   let maxY = m - 1;
   let minX = 0;
   let minY = 0;
+  spiral = [];
+  viz = [];
 
   //Set up Viz that is twice the size of the input matrix to allow for the arrows
   viz = new Array(m * 2).fill(" ");
-
   for (let i = 0; i < m * 2; i++) viz[i] = new Array(n * 2).fill(" ");
 
   while (minY <= maxY && minX <= maxX) {
@@ -154,6 +136,12 @@ function SpiralMatrix(props) {
     minX++;
   }
 
+  console.log("NEW VIZ:", viz);
+  for (let i = 0; i < m * 2; i++) {
+    for (let j = 0; j < n * 2; j++) console.log(viz[i][j]);
+  }
+  console.log("SPIZ:", spiral);
+
   return (
     <div>
       <h2>Spiral output</h2>
@@ -166,59 +154,75 @@ function SpiralMatrix(props) {
   );
 }
 
-const Select = ({ value, options, onChange }) => {
-  return (
-    <select name="Tests" value={value} onChange={onChange}>
-      {options.map((option) => {
-        return (
-          <option key={option.label} value={option.value}>
-            {option.label}
-          </option>
-        );
-      })}
-    </select>
-  );
-};
+// TEST MATRICES
+const matrix1 = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16],
+  [17, 18, 19, 20],
+  [21, 22, 23, 24],
+];
 
-// let user pick which matrix to show and viz
-function SelectMatrix() {
-  const [selectedMatrix, setSelectedMatrix] = useState(3); // start with the 3rd matrix rather than the first boring one
+const matrix2 = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16],
+  [17, 18, 19, 20],
+];
 
-  const handleChange = (e) => {
-    setSelectedMatrix(e.target.value);
-  };
+const matrix3 = [
+  [1, 2, 3, 4, 5, 6, 7, 8],
+  [9, 10, 11, 12, 13, 14, 15, 16],
+  [17, 18, 19, 20, 21, 22, 23, 24],
+  [25, 26, 27, 28, 29, 30, 31, 32],
+  [33, 34, 35, 36, 37, 38, 39, 40],
+];
 
-  return (
-    <>
-      <h2>Select a test matrix</h2>
+const matrix4 = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+];
 
-      <form>
-        <div className="h4 text-left mb-4 container-fluid">
-          <label>
-            <span>Select dimensions (m,n) </span>
-            <Select
-              value={selectedMatrix}
-              options={matrices}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
-      </form>
+const matrix5 = [
+  [1, 2],
+  [3, 4],
+  [5, 6],
+];
 
-      <SpiralMatrix matrix={matrices[selectedMatrix].m} />
-      <ShowViz />
-    </>
-  );
-}
+const matrix6 = [[1, 2, 3]];
+
+const matrix7 = [[1], [2], [3]];
+
+const matrix = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16],
+  [17, 18, 19, 20],
+];
+
+const matrix8 = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+];
+
+const matrixAlpha = [
+  ["A", "B"],
+  ["C", "D"],
+  ["E", "F"],
+];
+
 function App() {
   return (
     <div>
       <h1>Coding Challenge: Spiral Matrix</h1>
-      <h4>
-        Given an m x n matrix, return all elements of the matrix in spiral
-        order.
-      </h4>
-      <SelectMatrix />
+
+      <SpiralMatrix matrix={matrixAlpha} />
+      <ShowViz />
     </div>
   );
 }
